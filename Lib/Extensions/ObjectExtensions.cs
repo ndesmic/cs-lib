@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace Lib.Extensions
 {
@@ -55,6 +56,11 @@ namespace Lib.Extensions
                 return property.GetValue(entity, null);
             }
             return null;
+        }
+
+        public static string ToJson(this object self)
+        {
+            return JsonConvert.SerializeObject(self);
         }
     }
 }

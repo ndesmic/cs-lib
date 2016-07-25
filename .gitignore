@@ -2,7 +2,7 @@
 *.user
 [Bb]in/
 [Oo]bj/
-/Lib/Lib/bin
-/Lib/LibTests/bin
-/Lib/LibTests/obj
-/Lib/packages
+/Lib/bin
+/LibTests/bin
+/LibTests/obj
+/packages
