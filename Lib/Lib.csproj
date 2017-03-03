@@ -78,6 +78,7 @@
     <Compile Include="DataTypes\Option.cs" />
     <Compile Include="DataTypes\Result.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ExpandoExtensions.cs" />

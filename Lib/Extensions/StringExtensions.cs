@@ -5,12 +5,17 @@ namespace Lib.Extensions
 {
     public static class StringExtensions
     {
-        public static int ToInt(this string text)
+        public static int? AsIntOrDefault(this string str)
         {
-            return int.Parse(text);
+            int result;
+            if (!int.TryParse(str, out result))
+            {
+                return null;
+            }
+            return result;
         }
-		
-		public static string[] SplitCamelCase(string source)
+
+        public static string[] SplitCamelCase(string source)
         {
             return Regex.Split(source, @"(?<!^)(?=[A-Z])");
         }

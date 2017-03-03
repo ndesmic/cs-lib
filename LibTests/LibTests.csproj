@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="DataTypes\OptionTests.cs" />
     <Compile Include="DataTypes\ResultTests.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\ExpandoExtensionsTests.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
