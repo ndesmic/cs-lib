@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 
@@ -37,6 +38,21 @@ namespace Lib.Extensions
             }
 
             return (T)value;
+        }
+
+        public static T ToClass<T>(this ExpandoObject expando)
+        {
+            var props = typeof(T).GetProperties();
+            var entity = Activator.CreateInstance<T>();
+            var dictionary = expando as IDictionary<string, object>;
+            foreach (var prop in props)
+            {
+                if (dictionary.ContainsKey(prop.Name) && dictionary[prop.Name].GetType() == prop.PropertyType)
+                {
+                    prop.SetValue(entity, dictionary[prop.Name]);
+                }
+            }
+            return entity;
         }
     }
 }

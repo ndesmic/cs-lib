@@ -51,11 +51,7 @@ namespace Lib.Extensions
 		public static object GetPrefixedProperty<T>(this T entity, string propertyName, string prefix)
         {
             var property = typeof(T).GetProperties().FirstOrDefault(x => x.Name == prefix + propertyName);
-            if (property != null)
-            {
-                return property.GetValue(entity, null);
-            }
-            return null;
+		    return property?.GetValue(entity, null);
         }
 
         public static string ToJson(this object self)
