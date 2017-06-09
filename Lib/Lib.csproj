@@ -75,10 +75,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\Either.cs" />
+    <Compile Include="DataTypes\ListChangeSet.cs" />
     <Compile Include="DataTypes\Option.cs" />
     <Compile Include="DataTypes\Result.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\OptionExtensions.cs" />
+    <Compile Include="Extensions\ResultExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ExpandoExtensions.cs" />
@@ -86,12 +90,14 @@
     <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Extensions\ModelStateExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Helpers\MimeHelper.cs" />
     <Compile Include="Helpers\SqlHelper.cs" />
     <Compile Include="Mvc\DictionaryValueProvider.cs" />
     <Compile Include="Mvc\FormValueProviderFactory.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\TypeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sql\SqlTools.cs" />
     <Compile Include="Wrappers\DateTimeProvider.cs" />
     <Compile Include="Wrappers\ITimeProvider.cs" />
   </ItemGroup>

@@ -10,25 +10,25 @@ namespace LibTests.DataTypes
         [Test]
         public void Result_has_value_should_be_true_if_has_value()
         {
-            var result = new Result<int>(1);
+            var result = Result<int>.Ok(1);
             Assert.That(result.HasValue, Is.True);
         }
         [Test]
         public void Result_has_value_should_be_false_if_no_value()
         {
-            var result = new Result<int>(new Exception());
+            var result = Result<int>.Error(new Exception());
             Assert.That(result.HasValue, Is.False);
         }
         [Test]
         public void Result_has_exception_should_be_true_if_has_exception()
         {
-            var result = new Result<int>(new Exception());
+            var result = Result<int>.Error(new Exception());
             Assert.That(result.HasException, Is.True);
         }
         [Test]
         public void Result_has_exception_should_be_false_if_no_exception()
         {
-            var result = new Result<int>(1);
+            var result = Result<int>.Ok(1);
             Assert.That(result.HasException, Is.False);
         }
 
@@ -38,7 +38,7 @@ namespace LibTests.DataTypes
             var result = Result<int>.Try(() => 2);
             Assert.That(result.HasValue, Is.True);
             Assert.That(result.HasException, Is.False);
-            Assert.That(result.Value, Is.EqualTo(2));
+            Assert.That(result.ValueOrThrow, Is.EqualTo(2));
         }
 
         [Test]
@@ -54,14 +54,14 @@ namespace LibTests.DataTypes
         [Test]
         public void ResultTryThrow_should_throw_if_exception()
         {
-            var result = new Result<int>(new Exception("the error"));
+            var result = Result<int>.Error(new Exception("the error"));
             Assert.Throws<Exception>(() => result.TryThrow());
         }
 
         [Test]
         public void ResultTryThrow_should_not_throw_if_not_exception()
         {
-            var result = new Result<int>(5);
+            var result = Result<int>.Ok(5);
             Assert.DoesNotThrow(() => result.TryThrow());
         }
     }

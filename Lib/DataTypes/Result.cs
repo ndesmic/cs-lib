@@ -6,24 +6,24 @@ namespace Lib.DataTypes
     //Represents a calculation, if successful has value, if unsuccessful has exception, never both
     public class Result<T>
     {
-        public Result(T value)
+        private Result(T valueOrThrow)
         {
             HasValue = true;
-            Value = value;
+            ValueOrThrow = valueOrThrow;
         }
-        public Result(Exception exception)
+        private Result(Exception exception)
         {
             HasValue = false;
             Exception = exception;
         }
         public Exception Exception { get; }
-        public T Value { get; }
+        public T ValueOrThrow { get; }
         public bool HasValue { get; } = false;
         public bool HasException => !HasValue;
 
         public T ValueOrDefault(T defaultValue)
         {
-            return HasValue ? Value : defaultValue;
+            return HasValue ? ValueOrThrow : defaultValue;
         }
 
         public void TryThrow()
@@ -32,6 +32,35 @@ namespace Lib.DataTypes
             {
                 throw Exception;
             }
+        }
+
+        public Result<TU> Map<TU>(Func<T,TU> func)
+        {
+            return HasValue ? new Result<TU>(func(ValueOrThrow)) : new Result<TU>(Exception);
+        }
+
+        public Result<T> Filter(Func<T, bool> func, Func<T,Exception> exceptionMapFunc)
+        {
+            if (HasException)
+            {
+                return Error(Exception);
+            }
+            return func(ValueOrThrow) ? Ok(ValueOrThrow) : Error(exceptionMapFunc(ValueOrThrow));
+        }
+
+        public Result<T> AndThen(Action<T> func)
+        {
+            if (HasException)
+            {
+                return new Result<T>(Exception);
+            }
+            func(ValueOrThrow);
+            return new Result<T>(ValueOrThrow);
+        }
+
+        public Result<T> OrElse(Func<T> func)
+        {
+            return HasException ? new Result<T>(func()) : new Result<T>(ValueOrThrow);
         }
 
         public static Result<T> Try(Func<T> func)
@@ -61,5 +90,14 @@ namespace Lib.DataTypes
             }
             return result;
         }
+
+        public static Result<T> Ok(T value){
+            return new Result<T>(value);
+        }
+
+        public static Result<T> Error(Exception exception)
+        {
+            return new Result<T>(exception);
+        } 
     }
 }

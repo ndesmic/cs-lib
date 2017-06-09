@@ -19,7 +19,7 @@ namespace Lib.DataTypes
 
         public bool HasValue { get; } = false;
         public bool IsNone => !HasValue;
-        public T Value
+        public T ValueOrThrow
         {
             get
             {
@@ -32,12 +32,26 @@ namespace Lib.DataTypes
         }
         public T ValueOrDefault(T defaultValue)
         {
-            return IsNone ? defaultValue : Value;
+            return IsNone ? defaultValue : ValueOrThrow;
         }
-        public Option<TU> Map<TU>(Func<T, TU> func)
+        public T ValueOrDefault()
         {
-            return IsNone ? Option<TU>.None : new Option<TU>(func(Value));
+            return IsNone ? default(T) : ValueOrThrow;
         }
+
+        public Option<TU> Map<TU>(Func<T, TU> func) 
+        {
+            return IsNone ? Option<TU>.None : new Option<TU>(func(ValueOrThrow));
+        }
+
+        public Option<T> Filter(Func<T,bool> func)
+        {
+            if (IsNone)
+            {
+                return None;
+            }
+            return func(ValueOrThrow) ? Some(ValueOrThrow) : None;
+        } 
 
         public Option<T> AndThen(Action<T> func)
         {
@@ -45,16 +59,17 @@ namespace Lib.DataTypes
             {
                 return None;
             }
-            func(Value);
-            return new Option<T>(Value);
+            func(ValueOrThrow);
+            return new Option<T>(ValueOrThrow);
         }
 
         public Option<T> OrElse(Func<T> func)
         {
-            return IsNone ? new Option<T>(func()) : new Option<T>(Value);
+            return IsNone ? new Option<T>(func()) : new Option<T>(ValueOrThrow);
         }
 
         public static Option<T> None => new Option<T>();
         public static Option<T> Some(T value) => new Option<T>(value);
+        public static Option<T> FromNullable(T value) => value == null ? None : Some(value);
     }
 }

@@ -13,7 +13,7 @@ namespace LibTests.DataTypes
             var option = Option<int>.Some(1);
             Assert.True(option.HasValue);
             Assert.False(option.IsNone);
-            Assert.That(option.Value, Is.EqualTo(1));
+            Assert.That(option.ValueOrThrow, Is.EqualTo(1));
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace LibTests.DataTypes
         public void Option_should_throw_if_none_and_accessed_value()
         {
             var option = Option<int>.None;
-            Assert.Throws<Exception>(() => { var x = option.Value; });
+            Assert.Throws<Exception>(() => { var x = option.ValueOrThrow; });
         }
 
         [Test]
@@ -49,7 +49,22 @@ namespace LibTests.DataTypes
         public void Option_Map_should_map_to_new_option_type()
         {
             var option = Option<int>.Some(5);
-            Assert.That(option.Map(x => x.ToString()).Value, Is.EqualTo("5"));
+            Assert.That(option.Map(x => x.ToString()).ValueOrThrow, Is.EqualTo("5"));
+        }
+
+        [Test]
+        public void Option_Filter_should_set_rejected_value_to_none()
+        {
+            var option = Option<int>.Some(7);
+            Assert.That(option.Filter(x => x > 10).HasValue, Is.False);
+        }
+
+        [Test]
+        public void Option_Filter_should_set_accepted_value_to_value()
+        {
+            var option = Option<int>.Some(11);
+            Assert.That(option.Filter(x => x > 10).HasValue, Is.True);
+            Assert.That(option.Filter(x => x > 10).ValueOrThrow, Is.EqualTo(11));
         }
 
         [Test]

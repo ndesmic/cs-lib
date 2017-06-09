@@ -47,9 +47,11 @@
     <Compile Include="DataTypes\OptionTests.cs" />
     <Compile Include="DataTypes\ResultTests.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ExpandoExtensionsTests.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sql\SqlToolsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

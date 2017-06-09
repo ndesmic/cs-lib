@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Lib.DataTypes;
 
 namespace Lib.Extensions
 {
@@ -33,6 +34,41 @@ namespace Lib.Extensions
         public static IEnumerable<TSource> MaxBy<TSource, TKey, TKey2>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TKey2> valueSelector)
         {
             return source.GroupBy(keySelector).Select(g => g.OrderByDescending(valueSelector).First());
+        }
+
+        public static Option<T> FirstOrNone<T>(this IEnumerable<T> list, Func<T,bool> predicate)
+        {
+            foreach (var item in list.Where(predicate))
+            {
+                return Option<T>.Some(item);
+            }
+            return Option<T>.None;
+        }
+
+        public static ListChangeSet<T> Diff<T>(this IEnumerable<T> list, IEnumerable<T> other, Func<T, object> identifierFunc = null)
+        {
+            var changeSet = new ListChangeSet<T>();
+            var otherList = other.ToList();
+
+            if (identifierFunc == null)
+            {
+                identifierFunc = x => x;
+            }
+            foreach (var item in list)
+            {
+                var identifier = identifierFunc(item);
+                var foundItem = otherList.FirstOrNone(x => identifierFunc(x).Equals(identifier));
+                if (foundItem.HasValue)
+                {
+                    changeSet.Same.Add(item);
+                }
+                else
+                {
+                    changeSet.Removed.Add(item);
+                }
+            }
+            changeSet.Added.AddRange(otherList.Where(x => !changeSet.Same.Contains(x)));
+            return changeSet;
         }
     }
 }
